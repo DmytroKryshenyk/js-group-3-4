@@ -43,5 +43,5 @@ if (userNumberOfSeats % 1 === 0 && userNumberOfSeats > 0) {
     alert("Извините, мест нет.");
   }
 } else {
-  console.log("Ошибка ввода");
+  alert("Ошибка ввода");
 }
