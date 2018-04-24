@@ -14,7 +14,7 @@ if (userNumberOfSeats % 1 === 0 && userNumberOfSeats > 0) {
       "Есть место в группе Taba, согласны ли Вы быть в этой группе?"
     );
     if (confirmationGroup) {
-      taba = taba - 1;
+      taba = taba - userNumberOfSeats;
       alert("Приятного путешествия в группе Taba");
     } else {
       alert("Нам очень жаль, приходите еще!");
@@ -24,7 +24,7 @@ if (userNumberOfSeats % 1 === 0 && userNumberOfSeats > 0) {
       "Есть место в группе Sharm, согласны ли Вы быть в этой группе?"
     );
     if (confirmationGroup) {
-      sharm = sharm - 1;
+      sharm = sharm - userNumberOfSeats;
       alert("Приятного путешествия в группе Sharm");
     } else {
       alert("Нам очень жаль, приходите еще!");
@@ -34,7 +34,7 @@ if (userNumberOfSeats % 1 === 0 && userNumberOfSeats > 0) {
       "Есть место в группе Hurganda, согласны ли Вы быть в этой группе?"
     );
     if (confirmationGroup) {
-      hurganda = hurganda - 1;
+      hurganda = hurganda - userNumberOfSeats;
       alert("Приятного путешествия в группе Hurganda");
     } else {
       alert("Нам очень жаль, приходите еще!");
