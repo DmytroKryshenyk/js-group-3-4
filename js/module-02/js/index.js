@@ -17,4 +17,4 @@ do {
 for (let i = 0; i < numbers.length; i = i + 1) {
   total = total + numbers[i];
 }
-console.log(`Загальна сума дорівнює: ${total}`);
+alert(`Загальна сума дорівнює: ${total}`);
