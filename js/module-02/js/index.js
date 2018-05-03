@@ -14,10 +14,9 @@ do {
   }
 } while (userInput !== null);
 
-for (let i = 0; i < numbers.length; i = i + 1) {
-  total = total + numbers[i];
-}
-
-if (numbers.length >= 1) {
+if (numbers.length > 0) {
+  for (let i = 0; i < numbers.length; i = i + 1) {
+    total = total + numbers[i];
+  }
   alert(`Загальна сума дорівнює: ${total}`);
 }
