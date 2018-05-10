@@ -1,40 +1,29 @@
-"use strict";
+'use strict';
 
-const logins = ["Mango", "robotGoogles", "Poly", "Aj4x1sBozz", "qwerty123"];
+const logins = ['Mango', 'robotGoogles', 'Poly', 'Aj4x1sBozz', 'qwerty123'];
 
-const addLogin = (logins, login) => {
-
-  const checkLoginValidity = () => {
-    if (login.length < 17 && login.length > 3) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  const checkIfLoginExists = () => {
-    if (logins.includes(login)) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-
-  if (checkLoginValidity()) {
-    checkIfLoginExists();
-  } else {
-    return console.log("Ошибка! Логин должен быть от 4 до 16 символов");
-  }
-
-  if (checkIfLoginExists()) {
-    return console.log("Такой логин уже используется!");
-  } else {
-    console.log("Логин успешно добавлен!");
-    return logins.push(login);
-  }
+const checkLoginValidity = log => {
+  return log.length < 17 && log.length > 3 ? true : false;
 };
 
-addLogin(logins, "dimas");
-console.log(logins);
+const checkIfLoginExists = (logs, log) => {
+  return logins.includes(log) ? true : false;
+};
 
+const addLogin = (logins, login) => {
+  if (!checkLoginValidity(login)) {
+    return console.log('Ошибка! Логин должен быть от 4 до 16 символов');
+  }
+
+  checkIfLoginExists(logins, login);
+
+  if (!checkIfLoginExists(logins, login)) {
+    console.log('Логин успешно добавлен!');
+    return logins.push(login);
+  }
+
+  return console.log('Такой логин уже используется!');
+};
+
+addLogin(logins, 'Poe');
+console.log(logins);
