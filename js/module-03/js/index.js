@@ -1,29 +1,29 @@
-'use strict';
+"use strict";
 
-const logins = ['Mango', 'robotGoogles', 'Poly', 'Aj4x1sBozz', 'qwerty123'];
+const logins = ["Mango", "robotGoogles", "Poly", "Aj4x1sBozz", "qwerty123"];
 
 const checkLoginValidity = log => {
-  return log.length < 17 && log.length > 3 ? true : false;
+  return log.length < 17 && log.length > 3;
 };
 
 const checkIfLoginExists = (logs, log) => {
-  return logins.includes(log) ? true : false;
+  return logins.includes(log);
 };
 
 const addLogin = (logins, login) => {
   if (!checkLoginValidity(login)) {
-    return console.log('Ошибка! Логин должен быть от 4 до 16 символов');
+    console.log("Ошибка! Логин должен быть от 4 до 16 символов");
+    return;
   }
 
-  checkIfLoginExists(logins, login);
-
-  if (!checkIfLoginExists(logins, login)) {
-    console.log('Логин успешно добавлен!');
-    return logins.push(login);
+  if (checkIfLoginExists(logins, login)) {
+    console.log("Такой логин уже используется!");
+    return;
   }
 
-  return console.log('Такой логин уже используется!');
+  console.log("Логин успешно добавлен!");
+  return logins.push(login);
 };
 
-addLogin(logins, 'Poe');
+addLogin(logins, "Dmytro");
 console.log(logins);
