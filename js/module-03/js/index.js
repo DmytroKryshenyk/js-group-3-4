@@ -22,7 +22,7 @@ const addLogin = (logins, login) => {
   }
 
   console.log("Логин успешно добавлен!");
-  return logins.push(login);
+  logins.push(login);
 };
 
 addLogin(logins, "Dmytro");
