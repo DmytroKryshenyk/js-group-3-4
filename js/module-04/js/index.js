@@ -14,28 +14,21 @@ const products = {
 function Cashier(name = 'manger', products = {}) {
   this.name = name;
   this.products = products;
-  this.order = order;
 
   this.totalPrice = 0;
   this.customerMoney = 0;
   this.changeAmount = 0;
 
   this.countTotalPrice = function(order) {
-    for (let ordKeys in order) {
-      for (let prodKeys in products) {
-        if (ordKeys === prodKeys) {
-          this.totalPrice =
-            this.totalPrice + order[ordKeys] * products[prodKeys];
-        }
-      }
+    const keys = Object.keys(order);
+    for (let key of keys) {
+      this.totalPrice = this.totalPrice + order[key] * this.products[key];
     }
   };
 
   this.getCustomerMoney = function() {
     do {
-      this.customerMoney = prompt(
-        `Загальна сума покупок: ${this.totalPrice}. Давайте гроші!`,
-      );
+      this.customerMoney = prompt( `Загальна сума покупок: ${this.totalPrice}. Давайте гроші!`, );
 
       if (this.customerMoney === null) {
         return null;
@@ -72,15 +65,14 @@ function Cashier(name = 'manger', products = {}) {
 
   this.serve = function(order) {
     this.countTotalPrice(order);
-    this.getCustomerMoney();
-    this.countChange();
-    if (this.customerMoney >= this.totalPrice) {
-      alert(`Дякуємо за покупку, Ваша здача ${this.changeAmount}`);
-    }
-    if (this.customerMoney < this.totalPrice) {
+    const result = this.getCustomerMoney();
+    if (result === null) {
       alert('Дуже шкода, щось пішло не так, приходьте ще');
+      this.reset();
+      return;
     }
-
+    alert(`Дякуємо за покупку!`);
+    this.countChange();
     this.reset();
   };
 }
