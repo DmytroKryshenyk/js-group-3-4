@@ -54,13 +54,8 @@ function SocialBook(users = [], posts = {}) {
   };
 
   this.getUserStatus = userId => {
-    let result = 'inactive';
-    this.users.find(element => {
-      if (element.id === userId && element.isActive) {
-        return (result = 'active');
-      }
-    });
-    return result;
+    const user = this.users.find(u => u.id === userId);
+    return user.isActive ? 'active' : 'inactive';
   };
 
   this.addUser = user => {
@@ -69,7 +64,8 @@ function SocialBook(users = [], posts = {}) {
     this.users.push(user);
   };
 
-  this.removeUserById = userId => this.users = this.users.filter(element => element.id !== userId);
+  this.removeUserById = userId =>
+    (this.users = this.users.filter(element => element.id !== userId));
 
   this.getUsersCount = () => this.users.length;
 
@@ -80,7 +76,9 @@ function SocialBook(users = [], posts = {}) {
   this.addPost = (userId, post) => this.posts[userId].push(post);
 
   this.removePost = (userId, postId) => {
-    this.posts[userId] = this.posts[userId].filter(element => element.id !== postId);
+    this.posts[userId] = this.posts[userId].filter(
+      element => element.id !== postId,
+    );
   };
 
   this.getAllLikes = userId => {
@@ -107,12 +105,12 @@ const book = new SocialBook(initialUsers, initialPosts);
 
 console.log(book.getAllUsers());
 
-console.log(book.getUserByLogin("polysweet@skynet.ze"))
+console.log(book.getUserByLogin('polysweet@skynet.ze'));
 
 console.log(book.getUserStatus('-qkpzenjxe'));
 console.log(book.getUserStatus('-e51cpd4di'));
 
-book.addUser({ email: "DmytroRobota@gmail.com", password: "blablabla" });
+book.addUser({ email: 'DmytroRobota@gmail.com', password: 'blablabla' });
 console.log(book.users);
 
 book.removeUserById('-e51cpd4di');
@@ -124,17 +122,21 @@ console.log(book.getUsersCount());
 // // ============================
 // // Провірка доп завдань
 
-console.log(book.getUserPosts("-qkpzenjxe"))
+console.log(book.getUserPosts('-qkpzenjxe'));
 
-book.addPost("-e51cpd4di", { id: getId(), text: "post #2 bla bla", likes: 666 })
-console.log(book.posts)
-
-book.removePost("-s19a6hqce", "-199hb6igr")
-console.log(book.posts)
-
-console.log(book.getAllLikes("-qkpzenjxe"));
-
-book.addPostLike("-s19a6hqce", "-5sgljaskg");
+book.addPost('-e51cpd4di', {
+  id: getId(),
+  text: 'post #2 bla bla',
+  likes: 666,
+});
 console.log(book.posts);
 
-console.log(book.getPostsCount("-qkpzenjxe"));
+book.removePost('-s19a6hqce', '-199hb6igr');
+console.log(book.posts);
+
+console.log(book.getAllLikes('-qkpzenjxe'));
+
+book.addPostLike('-s19a6hqce', '-5sgljaskg');
+console.log(book.posts);
+
+console.log(book.getPostsCount('-qkpzenjxe'));
