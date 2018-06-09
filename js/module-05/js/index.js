@@ -47,15 +47,15 @@ function SocialBook(users = [], posts = {}) {
   this.users = users;
   this.posts = posts;
 
-  this.getAllUsers = () => posts;
+  this.getAllUsers = () => this.users;
 
   this.getUserByLogin = login => {
-    return users.find(element => element.login === login);
+    return this.users.find(element => element.login === login);
   };
 
   this.getUserStatus = userId => {
     let result = 'inactive';
-    users.find(element => {
+    this.users.find(element => {
       if (element.id === userId && element.isActive) {
         return (result = 'active');
       }
@@ -66,37 +66,37 @@ function SocialBook(users = [], posts = {}) {
   this.addUser = user => {
     user.id = getId();
     user.isActive = false;
-    users.push(user);
+    this.users.push(user);
   };
 
-  this.removeUserById = userId => this.users = users.filter(element => element.id !== userId);
+  this.removeUserById = userId => this.users = this.users.filter(element => element.id !== userId);
 
   this.getUsersCount = () => this.users.length;
 
   // //ДОП ЗАВДАННЯ
 
-  this.getUserPosts = userId => posts[userId];
+  this.getUserPosts = userId => this.posts[userId];
 
-  this.addPost = (userId, post) => posts[userId].push(post);
+  this.addPost = (userId, post) => this.posts[userId].push(post);
 
   this.removePost = (userId, postId) => {
-    posts[userId] = posts[userId].filter(element => element.id !== postId);
+    this.posts[userId] = this.posts[userId].filter(element => element.id !== postId);
   };
 
   this.getAllLikes = userId => {
-    let userPosts = posts[userId];
+    let userPosts = this.posts[userId];
     return userPosts.reduce((sum, current) => sum + current.likes, 0);
   };
 
   this.addPostLike = (userId, postId) => {
-    posts[userId].forEach(element => {
+    this.posts[userId].forEach(element => {
       if (element.id === postId) {
         element.likes += 1;
       }
     });
   };
 
-  this.getPostsCount = userId => posts[userId].length;
+  this.getPostsCount = userId => this.posts[userId].length;
 }
 
 const book = new SocialBook(initialUsers, initialPosts);
