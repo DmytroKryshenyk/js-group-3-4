@@ -11,12 +11,10 @@
     номер 6 (https://codepen.io/goit-fe-adv/pen/MVPaeZ) так,
     чтобы она принимала объект post с данными для заполнения полей
     в карточке.
-
   2. Создайте функцию createCards(posts), которая принимает массив
     объектов-карточек, вызывает функцию createPostCard(post) столько
     раз, сколько объектов в массиве, сохраняя общий результат и возвращает
     массив DOM-элементов всех постов.
-
   3. Повесьте все посты в какой-то уже существующий DOM-узел.
 */
 
@@ -48,10 +46,13 @@ const posts = [
 
 const body = document.querySelector('body');
 
+const allPosts = [];
+
 function createCards(posts) {
   posts.forEach(element => {
-    createPostCard(element);
+    allPosts.push(createPostCard(element));
   });
+  return allPosts;
 }
 
 function createPostCard(element) {
@@ -76,8 +77,9 @@ function createPostCard(element) {
   button.textContent = 'Read more';
   button.setAttribute('href', element.link);
 
-  body.appendChild(post);
   post.append(postTitle, postImage, postText, button);
+  return post;
 }
 
 createCards(posts);
+body.append(...allPosts)
