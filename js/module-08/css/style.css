@@ -1,0 +1,34 @@
+head {
+  font-size: 16px;
+}
+
+.image-gallery {
+  width: 78.5rem;
+  flex-wrap: wrap;
+  margin: auto;
+  border: 1px solid #6b6b6b;
+  padding: 1rem;
+}
+
+.fullview img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  box-shadow: 0 0 0.3125rem 0 #000000;
+  padding: 0.3125rem;
+}
+
+.preview {
+  list-style-type: none;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.625rem;
+  box-shadow: 0 0 0.3125rem 0 #000000;
+  padding: 0.3125rem;
+}
+
+.preview img{
+  display: block;
+  max-width: 100%;
+  height: 7.8125rem
+}
