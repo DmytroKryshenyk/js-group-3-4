@@ -16,17 +16,17 @@ const addGallery = new CreateGallery(galleryItems);
 // ====================================================
 
 function CreateGallery(massOfImg) {
-  const fullviewCreator = document.createElement('div');
-  fullviewCreator.classList.add('fullview');
+  const fullviewBlock = document.createElement('div');
+  fullviewBlock.classList.add('fullview');
 
   const fullviewImg = document.createElement('img');
   fullviewImg.setAttribute('src', massOfImg[0].fullview);
   fullviewImg.setAttribute('alt', massOfImg[0].alt);
 
-  fullviewCreator.appendChild(fullviewImg);
+  fullviewBlock.appendChild(fullviewImg);
 
-  const previewCreator = document.createElement('ul');
-  previewCreator.classList.add('preview');
+  const previewBlock = document.createElement('ul');
+  previewBlock.classList.add('preview');
 
   massOfImg.forEach(function fillSmallImages(element) {
     const previewLi = document.createElement('li');
@@ -34,11 +34,11 @@ function CreateGallery(massOfImg) {
     previewImg.setAttribute('src', element.preview);
     previewImg.setAttribute('data-fullview', element.fullview);
     previewImg.setAttribute('alt', element.alt);
-    previewCreator.appendChild(previewLi);
+    previewBlock.appendChild(previewLi);
     previewLi.appendChild(previewImg);
   });
 
-  imageGallery.append(fullviewCreator, previewCreator);
+  imageGallery.append(fullviewBlock, previewBlock);
 
   const preview = document.querySelector('.preview');
   preview.addEventListener('click', changeFillViewImg);
@@ -51,9 +51,7 @@ function changeFillViewImg(event) {
   fullviewImage.src = event.target.dataset.fullview;
   fullviewImage.alt = event.target.alt;
 
-  const allPreviewImages = Array.from(
-    document.querySelectorAll('.preview img'),
-  );
+  const allPreviewImages = Array.from(document.querySelectorAll('.preview img'));
   allPreviewImages.forEach(element => (element.style.boxShadow = 'none'));
   event.target.style.boxShadow = '0 0 0.3125rem 0 #000000';
 }
