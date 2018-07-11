@@ -34,3 +34,11 @@ head {
   height: 7.8125rem;
   padding: 0.3125rem;
 }
+
+.active-boxshadow {
+  box-shadow: 0 0 0.3125rem 0 #000000;
+}
+
+.in-active-boxshadow {
+  box-shadow: none;
+}

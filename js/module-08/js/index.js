@@ -10,12 +10,15 @@ const galleryItems = [
 ];
 
 const imageGallery = document.querySelector('.image-gallery');
+const fullviewBlock = createFullViewBlock(galleryItems);
+const previewBlock = createPreviewBlock(galleryItems);
+imageGallery.append(fullviewBlock, previewBlock);
+const preview = document.querySelector('.preview');
+preview.addEventListener('click', changeFillViewImg);
 
-const addGallery = new CreateGallery(galleryItems);
-
-// ====================================================
-
-function CreateGallery(massOfImg) {
+// ===================================================================
+// Fullview Block
+function createFullViewBlock(massOfImg) {
   const fullviewBlock = document.createElement('div');
   fullviewBlock.classList.add('fullview');
 
@@ -25,6 +28,12 @@ function CreateGallery(massOfImg) {
 
   fullviewBlock.appendChild(fullviewImg);
 
+  return fullviewBlock;
+}
+
+// ===================================================================
+// Preview Block
+function createPreviewBlock(massOfImg) {
   const previewBlock = document.createElement('ul');
   previewBlock.classList.add('preview');
 
@@ -38,12 +47,11 @@ function CreateGallery(massOfImg) {
     previewLi.appendChild(previewImg);
   });
 
-  imageGallery.append(fullviewBlock, previewBlock);
-
-  const preview = document.querySelector('.preview');
-  preview.addEventListener('click', changeFillViewImg);
+  return previewBlock;
 }
 
+// ===================================================================
+// Event Listener for gallery
 function changeFillViewImg(event) {
   if (event.target.nodeName !== 'IMG') return;
 
@@ -52,6 +60,10 @@ function changeFillViewImg(event) {
   fullviewImage.alt = event.target.alt;
 
   const allPreviewImages = Array.from(document.querySelectorAll('.preview img'));
-  allPreviewImages.forEach(element => (element.style.boxShadow = 'none'));
-  event.target.style.boxShadow = '0 0 0.3125rem 0 #000000';
+
+  allPreviewImages.forEach(element => element.classList.add('in-active-boxshadow'));
+  event.target.classList.remove('in-active-boxshadow');
+  event.target.classList.add('active-boxshadow');
 }
+
+// ===================================================================
