@@ -117,7 +117,7 @@ function resetTimer() {
   arrayOfPauseIntervals = [];
   sumOfPauseIntervals = 0;
   timerActive = false;
-  clearInterval(timerIntervalID);
+  clearInterval(timerIntervalID)
 }
 
 // ==============================================================================
