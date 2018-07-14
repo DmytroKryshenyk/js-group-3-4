@@ -39,6 +39,10 @@ body {
   font-family: "Roboto", sans-serif;
 }
 
+.btn-start {
+  width: 190px;
+}
+
 .laps {
   margin-top: 10px;
   text-align: left;

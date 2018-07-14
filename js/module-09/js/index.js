@@ -48,53 +48,89 @@ const time = document.querySelector('.js-time');
 const start = document.querySelector('.js-start');
 const lap = document.querySelector('.js-take-lap');
 const reset = document.querySelector('.js-reset');
+const lapsList = document.querySelector('.js-laps');
 
 start.addEventListener('click', startTimer);
+lap.addEventListener('click', takeLap);
+reset.addEventListener('click', resetTimer);
 let timerActive = false;
-
-lap.addEventListener("click", takeLap);
-
-reset.addEventListener("click", resetTimer)
+let timerIntervalID = null;
+let startTime = 0;
+let pauseStartTime = null;
+let pauseActive = false;
+let arrayOfPauseIntervals = [];
+let sumOfPauseIntervals = 0;
 
 function startTimer() {
-  if (timerActive) return;
-  timerActive = true;
-  const startTime = Date.now();
-  start.textContent = "PAUSE";
+  //START Timer
+  if (!timerActive) {
+    timerActive = true;
+    startTime = Date.now();
+    timerIntervalID = setInterval(() => (time.textContent = getFormatedTime(Date.now() - startTime)), 100);
+    start.textContent = 'PAUSE';
+    return;
+  }
 
+  //PAUSE ON
+  if ( start.textContent === 'PAUSE' && !pauseActive ) {
+    pauseActive = true;
+    clearInterval(timerIntervalID);
+    pauseStartTime = Date.now();
+    time.textContent = getFormatedTime(pauseStartTime - startTime - sumOfPauseIntervals);
+    start.textContent = 'CONTINUE';
+    return;
+  }
+
+  //PAUSE OFF
+  if (start.textContent === 'CONTINUE' && pauseActive) {
+    pauseActive = false;
+    let pauseTime = Date.now() - pauseStartTime;
+    arrayOfPauseIntervals.push(pauseTime);
+    sumOfPauseIntervals = arrayOfPauseIntervals.reduce((sum, current) => sum + current, 0);
+    timerIntervalID = setInterval(
+      () => (time.textContent = getFormatedTime(Date.now() - startTime - sumOfPauseIntervals)),
+      100);
+    pauseStartTime = null;
+    start.textContent = 'PAUSE';
+    return;
+  }
 }
 
-function takeLap() {}
+function takeLap() {
+  if (!timerActive) return;
+  let lap = document.createElement('li');
+  let lapTime;
+  if (pauseActive) {
+    lapTime = getFormatedTime(pauseStartTime - startTime - sumOfPauseIntervals);
+  } else {lapTime = getFormatedTime(Date.now() - startTime - sumOfPauseIntervals);}
+  lap.textContent = lapTime;
+  lapsList.appendChild(lap);
+}
 
 function resetTimer() {
   if (!timerActive) return;
-  time.textContent = "00:00.0";
+  time.textContent = '00:00.0';
+  start.textContent = 'START';
+  startTime = 0;
+  pauseActive = false;
+  pauseStartTime = null;
+  arrayOfPauseIntervals = [];
+  sumOfPauseIntervals = 0;
   timerActive = false;
+  clearInterval(timerIntervalID);
 }
 
-
-
-
+// ==============================================================================
 function getFormatedTime(time) {
   const date = new Date(time);
-
   let dateMinutes = date.getMinutes(time);
   let dateSeconds = date.getSeconds(time);
   let dateMilliseconds = String(date.getMilliseconds(time)).substring(2);
-
   if (dateMinutes < 10) dateMinutes = '0' + dateMinutes;
   if (dateSeconds < 10) dateSeconds = '0' + dateSeconds;
   if (dateMilliseconds === '') dateMilliseconds = 0;
-
-  return console.log`${dateMinutes}:${dateSeconds}:${dateMilliseconds}`;
+  return `${dateMinutes}:${dateSeconds}.${dateMilliseconds}`;
 }
-
-
-
-
-
-
-
 
 /*
   ⚠️ ЗАДАНИЕ ПОВЫШЕННОЙ СЛОЖНОСТИ - ВЫПОЛНЯТЬ ПО ЖЕЛАНИЮ
