@@ -27,6 +27,7 @@ addBtn.addEventListener('click', addUser);
 deleteBtn.addEventListener('click', deleteUser);
 updateBtn.addEventListener('click', updateUser)
 
+//Отримати всіх користувачів
 function getAllUsers(event) {
   event.preventDefault();
   resetResultBlock();
@@ -72,6 +73,7 @@ function createUsersTable(usersInfo) {
   resultBlock.appendChild(table);
 }
 
+//Отримати вибраного нами користувача
 function getUser(event) {
   event.preventDefault();
   
@@ -89,9 +91,9 @@ function showUserInfo(user) {
   ID: ${user.data.id} </br> 
   NAME: ${user.data.name} </br> 
   AGE: ${user.data.age}</p>`
-  
 }
 
+//Добавити користувача
 function addUser(event) {
   event.preventDefault();
   const newUser = {
@@ -111,6 +113,7 @@ function addUser(event) {
     .catch(error => (result.textContent = 'Ошибка' + error));
 }
 
+//Видалити користувача
 function deleteUser(event) {
   event.preventDefault();
   fetch(`https://test-users-api.herokuapp.com/users${deleteUserInput.value}`, {
@@ -124,6 +127,7 @@ function deleteUser(event) {
     .catch(error => (result.textContent = 'Ошибка' + error));
 }
 
+//Оновити інфу користувача
 function updateUser(event) {
   event.preventDefault();
   const userToUpdate = {
@@ -149,7 +153,7 @@ function updateUser(event) {
 }
 
 
-// Функцыя для очистки resultBlock від таблиці
+// Функція для очистки resultBlock від таблиці
 function resetResultBlock() {
   resultBlock.innerHTML = '';
   const result = document.createElement("p");
@@ -157,3 +161,4 @@ function resetResultBlock() {
   result.textContent = "Result:"
   resultBlock.appendChild(result)
 }
+
