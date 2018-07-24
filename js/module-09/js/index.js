@@ -125,10 +125,9 @@ function getFormatedTime(time) {
   const date = new Date(time);
   let dateMinutes = date.getMinutes(time);
   let dateSeconds = date.getSeconds(time);
-  let dateMilliseconds = String(date.getMilliseconds(time)).substring(2);
+  let dateMilliseconds = String(date.getMilliseconds(time)).slice(0, 1);
   if (dateMinutes < 10) dateMinutes = '0' + dateMinutes;
   if (dateSeconds < 10) dateSeconds = '0' + dateSeconds;
-  if (dateMilliseconds === '') dateMilliseconds = 0;
   return `${dateMinutes}:${dateSeconds}.${dateMilliseconds}`;
 }
 
