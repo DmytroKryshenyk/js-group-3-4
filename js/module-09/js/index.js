@@ -50,81 +50,80 @@ const lap = document.querySelector('.js-take-lap');
 const reset = document.querySelector('.js-reset');
 const lapsList = document.querySelector('.js-laps');
 
-start.addEventListener('click', startTimer);
-lap.addEventListener('click', takeLap);
-reset.addEventListener('click', resetTimer);
 
-let timerActive = false;
-let timerIntervalID = null;
-let startTime = 0;
-let pauseStartTime = null;
-let pauseActive = false;
-let arrayOfPauseIntervals = [];
-let sumOfPauseIntervals = 0;
+let timer = {
+  intervalID: null,
+  startTime: 0,
+  pauseStartTime: null,
+  pauseActive: false,
+  arrayOfPauseIntervals: [],
+  sumOfPauseIntervals: 0,
 
-function startTimer() {
-  //START Timer
-  if (!timerActive) {
-    timerActive = true;
-    startTime = Date.now();
-    timerIntervalID = setInterval(() => (time.textContent = getFormatedTime(Date.now() - startTime)), 100);
-    start.textContent = 'PAUSE';
-    return;
-  }
+  startAndPauseTimer() {
+    //START Timer
+    if (!this.active) {
+      this.active = true;
+      this.startTime = Date.now();
+      this.intervalID = setInterval(() => (time.textContent = getFormatedTime(Date.now() - this.startTime)), 100);
+      start.textContent = 'PAUSE';
+      return;
+    }
+    //PAUSE ON
+    if ( start.textContent === 'PAUSE' && !this.pauseActive ) {
+      this.pauseActive = true;
+      clearInterval(this.intervalID);
+      this.pauseStartTime = Date.now();
+      time.textContent = getFormatedTime(this.pauseStartTime - this.startTime - this.sumOfPauseIntervals);
+      start.textContent = 'CONTINUE';
+      return;
+    }
+    //PAUSE OFF
+    if (start.textContent === 'CONTINUE' && this.pauseActive) {
+      this.pauseActive = false;
+      let pauseTime = Date.now() - this.pauseStartTime;
+      this.arrayOfPauseIntervals.push(pauseTime);
+      this.sumOfPauseIntervals = this.arrayOfPauseIntervals.reduce((sum, current) => sum + current, 0);
+      this.intervalID = setInterval(
+        () => (time.textContent = getFormatedTime(Date.now() - this.startTime - this.sumOfPauseIntervals)),
+        100);
+        this.pauseStartTime = null;
+      start.textContent = 'PAUSE';
+      return;
+    }
+  },
 
-  //PAUSE ON
-  if ( start.textContent === 'PAUSE' && !pauseActive ) {
-    pauseActive = true;
-    clearInterval(timerIntervalID);
-    pauseStartTime = Date.now();
-    time.textContent = getFormatedTime(pauseStartTime - startTime - sumOfPauseIntervals);
-    start.textContent = 'CONTINUE';
-    return;
-  }
+  takeLap() {
+    if (!this.active) return;
+    let lap = document.createElement('li');
+    let lapTime;
+    if (this.pauseActive) {
+      lapTime = getFormatedTime(this.pauseStartTime - this.startTime - this.sumOfPauseIntervals);
+    } else {lapTime = getFormatedTime(Date.now() - this.startTime - this.sumOfPauseIntervals);}
+    lap.textContent = lapTime;
+    lapsList.appendChild(lap);
+  },
 
-  //PAUSE OFF
-  if (start.textContent === 'CONTINUE' && pauseActive) {
-    pauseActive = false;
-    let pauseTime = Date.now() - pauseStartTime;
-    arrayOfPauseIntervals.push(pauseTime);
-    sumOfPauseIntervals = arrayOfPauseIntervals.reduce((sum, current) => sum + current, 0);
-    timerIntervalID = setInterval(
-      () => (time.textContent = getFormatedTime(Date.now() - startTime - sumOfPauseIntervals)),
-      100);
-    pauseStartTime = null;
-    start.textContent = 'PAUSE';
-    return;
+  resetTimer() {
+    if (!this.active) return;
+    time.textContent = '00:00.0';
+    start.textContent = 'START';
+    while (lapsList.firstChild) {
+      lapsList.removeChild(lapsList.firstChild);
+  } //На StackOverflow вичитав, що це швидший спосіб чим lapsList.innerHTML = ""
+    this.startTime = 0;
+    this.pauseActive = false;
+    this.pauseStartTime = null;
+    this.arrayOfPauseIntervals = [];
+    this.sumOfPauseIntervals = 0;
+    this.active = false;
+    clearInterval(this.intervalID)
   }
 }
 
-function takeLap() {
-  if (!timerActive) return;
-  let lap = document.createElement('li');
-  let lapTime;
-  if (pauseActive) {
-    lapTime = getFormatedTime(pauseStartTime - startTime - sumOfPauseIntervals);
-  } else {lapTime = getFormatedTime(Date.now() - startTime - sumOfPauseIntervals);}
-  lap.textContent = lapTime;
-  lapsList.appendChild(lap);
-}
+start.addEventListener('click', timer.startAndPauseTimer.bind(timer));
+lap.addEventListener('click', timer.takeLap.bind(timer));
+reset.addEventListener('click', timer.resetTimer.bind(timer));
 
-function resetTimer() {
-  if (!timerActive) return;
-  time.textContent = '00:00.0';
-  start.textContent = 'START';
-  while (lapsList.firstChild) {
-    lapsList.removeChild(lapsList.firstChild);
-} //На StackOverflow вичитав, що це швидший спосіб чим lapsList.innerHTML = ""
-  startTime = 0;
-  pauseActive = false;
-  pauseStartTime = null;
-  arrayOfPauseIntervals = [];
-  sumOfPauseIntervals = 0;
-  timerActive = false;
-  clearInterval(timerIntervalID)
-}
-
-// ==============================================================================
 function getFormatedTime(time) {
   const date = new Date(time);
   let dateMinutes = date.getMinutes(time);
@@ -134,6 +133,7 @@ function getFormatedTime(time) {
   if (dateSeconds < 10) dateSeconds = '0' + dateSeconds;
   return `${dateMinutes}:${dateSeconds}.${dateMilliseconds}`;
 }
+
 
 /*
   ⚠️ ЗАДАНИЕ ПОВЫШЕННОЙ СЛОЖНОСТИ - ВЫПОЛНЯТЬ ПО ЖЕЛАНИЮ
