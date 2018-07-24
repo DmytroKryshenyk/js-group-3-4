@@ -53,6 +53,7 @@ const lapsList = document.querySelector('.js-laps');
 start.addEventListener('click', startTimer);
 lap.addEventListener('click', takeLap);
 reset.addEventListener('click', resetTimer);
+
 let timerActive = false;
 let timerIntervalID = null;
 let startTime = 0;
@@ -111,6 +112,9 @@ function resetTimer() {
   if (!timerActive) return;
   time.textContent = '00:00.0';
   start.textContent = 'START';
+  while (lapsList.firstChild) {
+    lapsList.removeChild(lapsList.firstChild);
+} //На StackOverflow вичитав, що це швидший спосіб чим lapsList.innerHTML = ""
   startTime = 0;
   pauseActive = false;
   pauseStartTime = null;
