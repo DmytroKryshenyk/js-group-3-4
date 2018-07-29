@@ -1,0 +1,23 @@
+.products-wraper {
+  border: 1px solid red;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.product-card {
+  flex-basis: 25%;
+  border: 1px solid green;
+  padding: 5px;
+  
+}
+
+.product-image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.product-name {
+    text-align: center;
+}
