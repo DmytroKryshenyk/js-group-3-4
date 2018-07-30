@@ -91,27 +91,48 @@ const laptops = [
   },
 ];
 
-const form = document.querySelector(".js-form");
+let filtredLaptops;
+const filter = { size: [], color: [], release_date: [] };
+
+const form = document.querySelector('.js-form');
 const productsWrapper = document.querySelector('.products-wraper');
 
-const productCardSource = document.getElementById('product-card-shablon').innerHTML.trim();
-const productCardFn = Handlebars.compile(productCardSource);
-const productCardMarkup = productCardFn(laptops);
-productsWrapper.insertAdjacentHTML('afterbegin', productCardMarkup);
-
-const filter = { size: [], color: [], release_date: [] }
-
+const source = document.getElementById('product-card-shablon').innerHTML.trim();
+const template = Handlebars.compile(source);
 
 form.addEventListener('submit', filterFn);
 
 function filterFn(event) {
-    event.preventDefault();
+  event.preventDefault();
+  filtredLaptops = [];
+  const checkedInputs = Array.from(form.querySelectorAll('.js-form input:checked'));
 
-    const checkedInputs = Array.from(form.querySelectorAll(".js-form input:checked"));
+  checkedInputs.forEach(element => {
+    const name = element.name;
+    const value = element.value;
+    filter[name].push(value);
+  });
 
-    checkedInputs.forEach(element => {
-      const name = element.name;
-      const value = element.value;
-      filter[name].push(value)
-    })
+  productsFiltering(laptops);
+
+  const markup = template(filtredLaptops);
+  productsWrapper.innerHTML = markup;
+}
+
+
+// ===============================================================
+function productsFiltering(laptopsList) {
+  laptopsList.forEach(product => {
+    let appropriateSize = false;
+    let appropriateColor = false;
+    let appropriateReleaseDate = false;
+
+    filter.size.forEach(value => {if (value === String(product.size)) appropriateSize = true;});
+
+    filter.color.forEach(value => {if (value === product.color) appropriateColor = true;});
+
+    filter.release_date.forEach(value => {if (value === String(product.release_date)) appropriateReleaseDate = true;});
+
+    if (appropriateSize && appropriateColor && appropriateReleaseDate) filtredLaptops.push(product);
+  });
 }
