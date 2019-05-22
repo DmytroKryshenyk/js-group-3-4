@@ -19,14 +19,14 @@ body {
   border-radius: 2px;
 }
 
-.time {
+.stopwatch_face {
   margin-bottom: 15px;
   text-align: center;
   font-family: "Roboto Mono", monospace;
   font-size: 80px;
 }
 
-.btn {
+.stopwatch_btn {
   display: inline;
   text-transform: uppercase;
   border: 0;
@@ -39,11 +39,11 @@ body {
   font-family: "Roboto", sans-serif;
 }
 
-.btn-start {
+.stopwatch_start {
   width: 190px;
 }
 
-.laps {
+.stopwatch_lapsList {
   margin-top: 10px;
   text-align: left;
   color: #212121;
