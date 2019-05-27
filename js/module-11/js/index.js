@@ -1,177 +1,165 @@
+// Data
 const laptops = [
   {
     size: 13,
-    color: 'white',
+    color: "white",
     price: 28000,
     release_date: 2015,
     name: 'Macbook Air White 13"',
-    img: 'http://demo.posthemes.com/pos_zadademo/images/placeholder.png',
-    descr:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, beatae.',
+    img: "http://demo.posthemes.com/pos_zadademo/images/placeholder.png",
+    descr: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, beatae."
   },
   {
     size: 13,
-    color: 'gray',
+    color: "gray",
     price: 32000,
     release_date: 2016,
     name: 'Macbook Air Gray 13"',
-    img: 'http://demo.posthemes.com/pos_zadademo/images/placeholder.png',
-    descr:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, beatae.',
+    img: "http://demo.posthemes.com/pos_zadademo/images/placeholder.png",
+    descr: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, beatae."
   },
   {
     size: 13,
-    color: 'black',
+    color: "black",
     price: 35000,
     release_date: 2017,
     name: 'Macbook Air Black 13"',
-    img: 'http://demo.posthemes.com/pos_zadademo/images/placeholder.png',
-    descr:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, beatae.',
+    img: "http://demo.posthemes.com/pos_zadademo/images/placeholder.png",
+    descr: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, beatae."
   },
   {
     size: 15,
-    color: 'white',
+    color: "white",
     price: 45000,
     release_date: 2015,
     name: 'Macbook Air White 15"',
-    img: 'http://demo.posthemes.com/pos_zadademo/images/placeholder.png',
-    descr:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, beatae.',
+    img: "http://demo.posthemes.com/pos_zadademo/images/placeholder.png",
+    descr: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, beatae."
   },
   {
     size: 15,
-    color: 'gray',
+    color: "gray",
     price: 55000,
     release_date: 2016,
     name: 'Macbook Pro Gray 15"',
-    img: 'http://demo.posthemes.com/pos_zadademo/images/placeholder.png',
-    descr:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, beatae.',
+    img: "http://demo.posthemes.com/pos_zadademo/images/placeholder.png",
+    descr: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, beatae."
   },
   {
     size: 15,
-    color: 'black',
+    color: "black",
     price: 45000,
     release_date: 2017,
     name: 'Macbook Pro Black 15"',
-    img: 'http://demo.posthemes.com/pos_zadademo/images/placeholder.png',
-    descr:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, beatae.',
+    img: "http://demo.posthemes.com/pos_zadademo/images/placeholder.png",
+    descr: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, beatae."
   },
   {
     size: 17,
-    color: 'white',
+    color: "white",
     price: 65000,
     release_date: 2015,
     name: 'Macbook Air White 17"',
-    img: 'http://demo.posthemes.com/pos_zadademo/images/placeholder.png',
-    descr:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, beatae.',
+    img: "http://demo.posthemes.com/pos_zadademo/images/placeholder.png",
+    descr: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, beatae."
   },
   {
     size: 17,
-    color: 'gray',
+    color: "gray",
     price: 75000,
     release_date: 2016,
     name: 'Macbook Pro Gray 17"',
-    img: 'http://demo.posthemes.com/pos_zadademo/images/placeholder.png',
-    descr:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, beatae.',
+    img: "http://demo.posthemes.com/pos_zadademo/images/placeholder.png",
+    descr: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, beatae."
   },
   {
     size: 17,
-    color: 'black',
+    color: "black",
     price: 80000,
     release_date: 2017,
     name: 'Macbook Pro Black 17"',
-    img: 'http://demo.posthemes.com/pos_zadademo/images/placeholder.png',
-    descr:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, beatae.',
-  },
+    img: "http://demo.posthemes.com/pos_zadademo/images/placeholder.png",
+    descr: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, beatae."
+  }
 ];
 
-let filtredLaptops = []; //сюди загрузаться обєкти товарів, які пройшли фільтрацію
-const filter = { size: [], color: [], release_date: [] }; // тут обєкт із значеннями чекнутих інпутів
+// Filter CLASS
+class Filter {
+  constructor(data) {
+    this.data = data;
 
-const form = document.querySelector('.js-form');
-const productsWrapper = document.querySelector('.products-wraper');
+    this.filtredAndCreateDomCarts = function(form) {
+      const checkedInputs = this.checkedInputsArray(form);
+      const filtredResults = this.checkedValuesObj(checkedInputs);
+      const filtredCards = this.filtredCardsArr(this.data, filtredResults);
+      const filtredDomCardsMarkup = this.fitredDomCardsArr(filtredCards);
+      return filtredDomCardsMarkup;
+    };
 
-const source = document.getElementById('product-card-shablon').innerHTML.trim();
-const template = Handlebars.compile(source);
+    this.checkedInputsArray = function(form) {
+      return Array.from(form.querySelectorAll("input:checked"));
+    };
 
-form.addEventListener('submit', filterFn);
-form.addEventListener('reset', resetForm);
+    this.checkedValuesObj = function(arr) {
+      const filter = {};
+      arr.forEach(element => {
+        const hasFilterThisValue = filter[element.name] !== undefined;
+        if (hasFilterThisValue) {
+          filter[element.name].push(element.value);
+        } else {
+          filter[element.name] = [element.value];
+        }
+      });
+      return filter;
+    };
 
-function filterFn(event) {
+    this.filtredCardsArr = function(dataArr, filterResults) {
+      let filtredElements = [];
+
+      dataArr.forEach(element => {
+        let elementValidationResultArr = [];
+
+        for (let prop in filterResults) {
+          if (filterResults[prop].includes(String(element[prop]))) {
+            elementValidationResultArr.push(true);
+          } else {
+            elementValidationResultArr.push(false);
+          }
+        }
+
+        if (!elementValidationResultArr.includes(false)) {
+          filtredElements.push(element);
+        }
+      });
+
+      return filtredElements;
+    };
+
+    this.fitredDomCardsArr = function(arr) {
+      const templateSource = document.querySelector(".cart_template").innerHTML.trim();
+      const templateFn = Handlebars.compile(templateSource);
+      const markup = templateFn(arr);
+      return markup;
+    };
+  }
+}
+
+// ADD event listener to filter
+const formElement = document.querySelector(".js-form");
+formElement.addEventListener("submit", filtredCards);
+
+
+
+// Event listener function which create a cards element
+function filtredCards(event) {
   event.preventDefault();
-  const checkedInputs = Array.from(form.querySelectorAll('.js-form input:checked')); //масив чекнутих інпутів
 
-  fillingFilterValues(checkedInputs)
-  productsFiltering(laptops);
+  const form = event.currentTarget;
+  const container = document.querySelector(".products_wrapper");
+  container.innerHTML = "";
 
-  const markup = template(filtredLaptops);
-  productsWrapper.innerHTML = markup;
+  const filterClass = new Filter(laptops);
+  const filtredDomCardsMarkup = filterClass.filtredAndCreateDomCarts(form);
 
-  resetFilter()
-}
-
-
-// Функція заповнення обєкта filter вибраними значеннями інпутів
-function fillingFilterValues(checkedInputs) {
-  checkedInputs.forEach(element => {
-    const name = element.name;
-    const value = element.value;
-    filter[name].push(value);
-  })
-}
-
-// Функція, яка створює масив обєктів, які відповідають значенням вибраних інпутів
-function productsFiltering(laptopsList) {
-  laptopsList.forEach(product => {
-    // Тут ниже три флаги, які відповідають чи підходить товар вибраним інпутам, якщо true значить товар підходить по цьому параметру
-    let appropriateSize = false;
-    let appropriateColor = false;
-    let appropriateReleaseDate = false;
-
-    //Ниже три if , які дозволяють показати товар, якщо якийсь із інпутів взагалі не був обраний
-    if (filter.size.length === 0) appropriateSize = true;
-    if (filter.color.length === 0) appropriateColor = true;
-    if (filter.release_date.length === 0) appropriateReleaseDate = true;
-
-    // фільтруєм по розміру
-    filter.size.forEach(value => {
-      if (value === String(product.size)) 
-      appropriateSize = true;
-    });
-
-    // фільтруєм по польору
-    filter.color.forEach(value => {
-      if (value === product.color) 
-      appropriateColor = true;
-    });
-
-    // фільтруєм по року випуску
-    filter.release_date.forEach(value => {
-      if (value === String(product.release_date)) 
-      appropriateReleaseDate = true;
-    });
-
-    // якщо по всім параметрам у нас true значить товар проходить фільтрацію
-    if (appropriateSize && appropriateColor && appropriateReleaseDate) filtredLaptops.push(product);
-  });
-}
-
-// reset всьої форми
-function resetForm(event) {
-  resetFilter();
-  form.reset();
-}
-
-// reset тільки фільтра
-function resetFilter() {
-  filter.size = [];
-  filter.color = [];
-  filter.release_date = [];
-  filtredLaptops = []; //очищаєм масив фільтравоних обєктів від попередньої фільтрації
+  container.insertAdjacentHTML("afterbegin", filtredDomCardsMarkup);
 }

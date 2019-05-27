@@ -1,64 +1,79 @@
 <!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="css/style.css">
-    <title>module-11</title>
-</head>
-
-<body>
-
-
+<html lang="zxx">
+  <head>
+    <title>Учоба JS ТЕСТ</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="author" content="Dmytro Kryshenyk" />
+    <meta name="description" content="test template" />
+    <link rel="stylesheet" href="css/reset.css" />
+    <link href="css/style.css" type="text/css" rel="stylesheet" />
+  </head>
+  <body>
     <form class="form js-form">
-        <section>
-          <h2>Screen size</h2>
-          <ul>
-            <li><label><input type="checkbox" name="size" value="13"> 13"</label></li>
-            <li><label><input type="checkbox" name="size" value="15"> 15"</label></li>
-            <li><label><input type="checkbox" name="size" value="17"> 17"</label></li>
-          </ul>
-        </section>
-        <section>
-          <h2>Color</h2>
-          <ul>
-            <li><label><input type="checkbox" name="color" value="white"> white</label></li>
-            <li><label><input type="checkbox" name="color" value="gray"> gray</label></li>
-            <li><label><input type="checkbox" name="color" value="black"> black</label></li>
-          </ul>
-        </section>
-        <section>
-          <h2>Release date</h2>
-          <ul>
-            <li><label><input type="checkbox" name="release_date" value="2015"> 2015</label></li>
-            <li><label><input type="checkbox" name="release_date" value="2016"> 2016</label></li>
-            <li><label><input type="checkbox" name="release_date" value="2017"> 2017</label></li>
-          </ul>
-        </section>
-        <button type="submit">Filter</button>
-        <button type="reset">Clear</button>
-      </form>
-    
-<div class="products-wraper"></div>
+      <section>
+        <h2>Screen size</h2>
+        <ul>
+          <li>
+            <label><input type="checkbox" name="size" value="13" /> 13"</label>
+          </li>
+          <li>
+            <label><input type="checkbox" name="size" value="15" /> 15"</label>
+          </li>
+          <li>
+            <label><input type="checkbox" name="size" value="17" /> 17"</label>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Color</h2>
+        <ul>
+          <li>
+            <label><input type="checkbox" name="color" value="white" /> white</label>
+          </li>
+          <li>
+            <label><input type="checkbox" name="color" value="gray" /> gray</label>
+          </li>
+          <li>
+            <label><input type="checkbox" name="color" value="black" /> black</label>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Release date</h2>
+        <ul>
+          <li>
+            <label><input type="checkbox" name="release_date" value="2015" /> 2015</label>
+          </li>
+          <li>
+            <label><input type="checkbox" name="release_date" value="2016" /> 2016</label>
+          </li>
+          <li>
+            <label><input type="checkbox" name="release_date" value="2017" /> 2017</label>
+          </li>
+        </ul>
+      </section>
+      <button type="submit">Filter</button>
+      <button type="reset">Clear</button>
+    </form>
 
-<template id="product-card-shablon">
-    {{#each this}}
-    <div class="product-card">
-        <img class="product-image" src="{{img}}" alt="">
-        <h2 class="product-name">{{name}}</h2>
-        <p class="product-release-date">Release date: {{release_date}}</p>
-        <p class="product-description">Description: {{descr}}</p>
-        <p class="product-color">Color: {{color}}</p>
-        <p class="product-price">Price: {{price}}</p>
-    </div>
-    {{/each}}
-</template>
+    <div class="products_wrapper"></div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+    <template class="cart_template">
+      {{#each this}}
+      <div class="product-card">
+        <img class="product-image" src="{{ img }}" alt="some image" />
+        <h2 class="product-name">{{ name }}</h2>
+        <p class="product-release-date">Release date: {{ release_date }}</p>
+        <p class="product-description">Description: {{ descr }}</p>
+        <p class="product-color">Color: {{ color }}</p>
+        <p class="product-price">Price: {{ price }}</p>
+      </div>
+      {{/each}}
+    </template>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.2/handlebars.min.js"></script>
     <script src="js/index.js"></script>
-</body>
-
+  </body>
 </html>
