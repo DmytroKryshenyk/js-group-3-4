@@ -115,7 +115,7 @@ const bookmarkItemTemplate = document.querySelector(".bookmark_item-template");
 const localStorageKeyName = "bookmarkStorage";
 let bookmarkData = [];
 const APIkey = "5cf2af23508d7454cec43118791a3b9e494a2e5d8ad2a";
-const API = `http://api.linkpreview.net/?key=${APIkey}&q=`;
+const API = `https://api.linkpreview.net/?key=${APIkey}&q=`;
 
 // Create Bookmark class object
 const bookmark = new Bookmark(
