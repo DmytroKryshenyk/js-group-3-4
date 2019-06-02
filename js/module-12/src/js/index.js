@@ -70,7 +70,7 @@ class Bookmark {
             newDataItem = data;
           }
 
-          if (this.isHaveItem(newDataItem)) return;
+          if (this.isHaveItem(newDataItem)) return alert(this.existsMessage);
 
           this.data.unshift(newDataItem);
           this.createBookmarkList();
