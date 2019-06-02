@@ -8,7 +8,7 @@ module.exports = {
   entry: './src/js/index.js',
   output: {
     filename: 'js/index.js',
-    path: path.resolve(__dirname, 'build')
+    path: path.resolve(__dirname, 'build'),
   },
   module: {
     rules: [
@@ -31,6 +31,8 @@ module.exports = {
     new CopyPlugin([
       { from: './src/fonts', to: './fonts' },
       { from: './src/images', to: './images' },
+      /*Якщо виникає помилка із копіюванням шрифтів "Error: EPERM: operation not permitted, lstat ...", 
+      то тоді просто закрий IDE, відкрий консоль із правами адміністратора і запусти build заново */
     ]),
     new HtmlWebpackPlugin({
       inject: true /* автоматично в html вставляє лінки на JS і CSS */,

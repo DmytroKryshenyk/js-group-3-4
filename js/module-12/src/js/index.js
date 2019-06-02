@@ -1,92 +1,105 @@
 import '../styles/styles.scss';
 
+// Bookmark CLASS
+class Bookmark {
+  constructor(storageKey, data, template, domElement, input) {
+    this.storageKey = storageKey;
+    this.data = data;
+    this.template = template;
+    this.domElement = domElement;
+    this.input = input;
+    this.notValidMessage = "Синтаксична помилка! Введене вами значення не являється ссилкою. Виправте будь ласка.";
+    this.existsMessage = "Така закладка уже існує!";
+    
+    this.firstPageOpenCreatingBookmarkList = function() {
+      const isActive = "localStorage" in window;
+      if (!window || !isActive) return;
+
+      const storageKeyData = JSON.parse(localStorage.getItem(this.storageKey));
+      if (storageKeyData !== null) {
+        this.data.push(...storageKeyData);
+        this.createBookmarkList();
+      }
+    };
+
+    this.createBookmarkList = function() {
+      const handlebarsTamplate = this.template.innerHTML.trim();
+      const handlebarsFunction = Handlebars.compile(handlebarsTamplate);
+      const handlebarsMarkup = handlebarsFunction(this.data);
+      this.domElement.innerHTML = handlebarsMarkup;
+    };
+
+    this.addToStorage = function() {
+      localStorage.setItem(this.storageKey, JSON.stringify(this.data));
+    };
+
+    this.isValidValue = function(value) {
+      const urlValidationRegExp = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/gm;
+      return urlValidationRegExp.test(value);
+    };
+
+    this.listenerAddBookmarkItem = function(event) {
+      event.preventDefault();
+      const value = this.input.value.trim();
+
+      const isValid = this.isValidValue(value);
+      if (!isValid) {
+        return alert(this.notValidMessage);
+      }
+
+      const isHaveItem = this.data.some(element => element.url === value);
+      if (isHaveItem) {
+        return alert(this.existsMessage);
+      }
+
+      const newDataItemObj = { url: value };
+      this.data.unshift(newDataItemObj);
+
+      this.createBookmarkList();
+      this.addToStorage();
+    };
+
+    this.listenerRemoveBookmarkItem = function(event) {
+      event.preventDefault();
+      const target = event.target;     
+      if (target.nodeName !== "BUTTON") return;
+    
+      const itemValue = target.previousElementSibling.textContent.trim();
+      this.data = this.data.filter(element => element.url !== itemValue);
+    
+      this.createBookmarkList();
+      this.addToStorage();
+    }
+  }
+}
+
+// Select DOM Elements
+const bookmarkForm = document.querySelector(".bookmark_form-js");
+const bookmarkInput = bookmarkForm.querySelector(".bookmark_input-js");
+const bookmarkList = document.querySelector(".bookmark_list-js");
+const bookmarkItemTemplate = document.querySelector(".bookmark_item-template");
+
+// Bookmark working info
+const localStorageKeyName = "bookmarkStorage";
 let bookmarkData = [];
-const localStorageKeyName = 'bookmarkStorage';
+const APIKey = "5cf2af23508d7454cec43118791a3b9e494a2e5d8ad2a";
+const API = `http://api.linkpreview.net/?key=${APIKey}&q=`;
 
-const bookmark = document.querySelector('.bookmark');
-const bookmarkForm = bookmark.querySelector('.bookmark_form-js');
-const bookmarkInput = bookmarkForm.querySelector('.bookmark_input-js');
-const bookmarkList = bookmark.querySelector('.bookmark_list-js');
-const bookmarkItemTemplate = document.querySelector('.bookmark_item-template');
-// const APIKey = '5cf2af23508d7454cec43118791a3b9e494a2e5d8ad2a';
-// const API = `http://api.linkpreview.net/?key=${APIKey}&q=`;
-
-firstPageOpenCreatingBookmarkList(
+// Create Bookmark class object
+const bookmark = new Bookmark(
   localStorageKeyName,
   bookmarkData,
   bookmarkItemTemplate,
   bookmarkList,
+  bookmarkInput
 );
 
-bookmarkForm.addEventListener('submit', addBookmarkItem);
-bookmarkList.addEventListener('click', removeBookmarkItem);
+// First Page Opening function
+bookmark.firstPageOpenCreatingBookmarkList();
 
-function addBookmarkItem(event) {
-  event.preventDefault();
-  const value = bookmarkInput.value.trim();
-  const notValidMessage =
-    'Синтаксична помилка! Введене вами значення не являється ссилкою. Виправте будь ласка.';
-  const existsMessage = 'Така закладка уже існує!';
+// Listeners for Bookmark form
+bookmarkForm.addEventListener("submit", bookmark.listenerAddBookmarkItem.bind(bookmark));
+bookmarkList.addEventListener("click", bookmark.listenerRemoveBookmarkItem.bind(bookmark));
 
-  const isValid = isValidValue(value);
-  if (!isValid) {
-    return alert(notValidMessage);
-  }
 
-  const isHaveItem = bookmarkData.some(element => element.url === value);
-  if (isHaveItem) {
-    return alert(existsMessage);
-  }
 
-  let newItemObj = { url: value };
-  bookmarkData.unshift(newItemObj);
-
-  createBookmarkList(bookmarkData, bookmarkItemTemplate, bookmarkList);
-  addToStorage(localStorageKeyName, bookmarkData);
-}
-
-function removeBookmarkItem(event) {
-  const target = event.target;
-  const isRemoveBtn = target.classList.contains('bookmark_remove-js');
-  if (!isRemoveBtn) return;
-
-  const itemValue = target.previousElementSibling.textContent.trim();
-  bookmarkData = bookmarkData.filter(element => element.url !== itemValue);
-
-  createBookmarkList(bookmarkData, bookmarkItemTemplate, bookmarkList);
-  addToStorage(localStorageKeyName, bookmarkData);
-}
-
-// ===============================================================
-// HELPERS
-function firstPageOpenCreatingBookmarkList(
-  storageKey,
-  data,
-  template,
-  domElement,
-) {
-  const isActive = 'localStorage' in window;
-  if (!window || !isActive) return;
-
-  const storageKeyData = JSON.parse(localStorage.getItem(storageKey));
-  if (storageKeyData !== null) {
-    data.push(...storageKeyData);
-    createBookmarkList(data, template, domElement);
-  }
-}
-
-function addToStorage(key, data) {
-  localStorage.setItem(key, JSON.stringify(data));
-}
-
-function createBookmarkList(data, template, domElement) {
-  const handlebarsTamplate = template.innerHTML.trim();
-  const handlebarsFunction = Handlebars.compile(handlebarsTamplate);
-  const handlebarsMarkup = handlebarsFunction(data);
-  domElement.innerHTML = handlebarsMarkup;
-}
-
-function isValidValue(value) {
-  const urlValidationRegExp = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/gm;
-  return urlValidationRegExp.test(value);
-}
