@@ -1,16 +1,23 @@
 import '../styles/styles.scss';
 
+/* Туту використовується безплатний API для отримання інфи про введений сайт. 
+Тому скорочена назва(title) сайту буде записуватись в зкладку, якщо 
+записів буде менше чим 60 за годину. В іншому випадку заклдка буде записуватись 
+в такому вигляді, як Ви ввели*/
+
 // Bookmark CLASS
 class Bookmark {
-  constructor(storageKey, data, template, domElement, input) {
+  constructor(storageKey, data, template, domElement, input, API) {
     this.storageKey = storageKey;
     this.data = data;
     this.template = template;
     this.domElement = domElement;
     this.input = input;
-    this.notValidMessage = "Синтаксична помилка! Введене вами значення не являється ссилкою. Виправте будь ласка.";
+    this.API = API;
+    this.notValidMessage =
+      "Синтаксична помилка! Введене вами значення не являється ссилкою. Виправте будь ласка.";
     this.existsMessage = "Така закладка уже існує!";
-    
+
     this.firstPageOpenCreatingBookmarkList = function() {
       const isActive = "localStorage" in window;
       if (!window || !isActive) return;
@@ -38,6 +45,40 @@ class Bookmark {
       return urlValidationRegExp.test(value);
     };
 
+    this.isHaveItem = function(newData) {
+      return this.data.some(
+        element =>
+          element.url === newData.url ||
+          element.typingValue === newData.typingValue ||
+          element.title === newData.title
+      );
+    };
+
+    this.fetchUrlInfoAndCreateListAndStorage = function(value) {
+      fetch(`${this.API}${value}`)
+        .then(response => {
+          if (response.status === 200) return response.json();
+          return response.status;
+        })
+        .then(data => {
+          let newDataItem = null;
+
+          if (typeof data === "number") {
+            newDataItem = { url: value, title: value, typingValue: value };
+          } else {
+            data.typingValue = value;
+            newDataItem = data;
+          }
+
+          if (this.isHaveItem(newDataItem)) return;
+
+          this.data.unshift(newDataItem);
+          this.createBookmarkList();
+          this.addToStorage();
+        })
+        .catch(error => console.log(error.statusText));
+    };
+
     this.listenerAddBookmarkItem = function(event) {
       event.preventDefault();
       const value = this.input.value.trim();
@@ -47,29 +88,20 @@ class Bookmark {
         return alert(this.notValidMessage);
       }
 
-      const isHaveItem = this.data.some(element => element.url === value);
-      if (isHaveItem) {
-        return alert(this.existsMessage);
-      }
-
-      const newDataItemObj = { url: value };
-      this.data.unshift(newDataItemObj);
-
-      this.createBookmarkList();
-      this.addToStorage();
+      this.fetchUrlInfoAndCreateListAndStorage(value);
     };
 
     this.listenerRemoveBookmarkItem = function(event) {
       event.preventDefault();
-      const target = event.target;     
+      const target = event.target;
       if (target.nodeName !== "BUTTON") return;
-    
+
       const itemValue = target.previousElementSibling.textContent.trim();
-      this.data = this.data.filter(element => element.url !== itemValue);
-    
+      this.data = this.data.filter(element => element.title !== itemValue);
+
       this.createBookmarkList();
       this.addToStorage();
-    }
+    };
   }
 }
 
@@ -82,8 +114,8 @@ const bookmarkItemTemplate = document.querySelector(".bookmark_item-template");
 // Bookmark working info
 const localStorageKeyName = "bookmarkStorage";
 let bookmarkData = [];
-const APIKey = "5cf2af23508d7454cec43118791a3b9e494a2e5d8ad2a";
-const API = `http://api.linkpreview.net/?key=${APIKey}&q=`;
+const APIkey = "5cf2af23508d7454cec43118791a3b9e494a2e5d8ad2a";
+const API = `http://api.linkpreview.net/?key=${APIkey}&q=`;
 
 // Create Bookmark class object
 const bookmark = new Bookmark(
@@ -91,7 +123,8 @@ const bookmark = new Bookmark(
   bookmarkData,
   bookmarkItemTemplate,
   bookmarkList,
-  bookmarkInput
+  bookmarkInput,
+  API
 );
 
 // First Page Opening function
@@ -100,6 +133,3 @@ bookmark.firstPageOpenCreatingBookmarkList();
 // Listeners for Bookmark form
 bookmarkForm.addEventListener("submit", bookmark.listenerAddBookmarkItem.bind(bookmark));
 bookmarkList.addEventListener("click", bookmark.listenerRemoveBookmarkItem.bind(bookmark));
-
-
-
