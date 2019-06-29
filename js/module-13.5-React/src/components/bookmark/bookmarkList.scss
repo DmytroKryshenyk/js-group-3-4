@@ -1,0 +1,43 @@
+@import './bookmarkButtons.scss';
+
+.bookmark_list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  margin-top: 30px;
+}
+
+.bookmark_item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+
+  &:first-child {
+    padding-top: 0;
+  }
+
+  &:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+}
+
+.bookmark_link {
+  flex-grow: 1;
+  font: 300 14px 'Open Sans', sans-serif;
+  color: rgb(99, 99, 99);
+  text-decoration: none;
+  overflow: hidden;
+}
+
+.bookmark_remove,
+.bookmark_rename {
+  padding: 0 15px;
+}
+
+.bookmark_rename {
+  border-right: 1px solid rgba(255, 255, 255, 0.4);
+  margin-left: 10px;
+}

@@ -1,0 +1,28 @@
+.edit {
+    min-width: 300px;
+    width: 50%;
+    margin: 0;
+    background-color: rgba(255, 255, 255, 0.6);
+    padding: 10px;
+    text-align: center;
+  
+    :focus {
+      outline: none;
+    }
+  }
+  
+  .edit_input {
+    width: 100%;
+    resize: none;
+    font: 300 14px 'Open Sans', sans-serif;
+    color: rgb(99, 99, 99);
+    overflow: hidden;
+    border-radius: 7px;
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  
+  button.edit_submit {
+  padding: 5px 30px;
+  }
