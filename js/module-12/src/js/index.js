@@ -92,7 +92,6 @@ class Bookmark {
     };
 
     this.listenerRemoveBookmarkItem = function(event) {
-      event.preventDefault();
       const target = event.target;
       if (target.nodeName !== "BUTTON") return;
 
