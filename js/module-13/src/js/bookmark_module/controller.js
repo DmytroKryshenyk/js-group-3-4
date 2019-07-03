@@ -41,7 +41,6 @@ export default class Controller {
 
     // Listener function for removing bookmark item
     this.listenerRemoveHandler = function(event) {
-      event.preventDefault();
       const target = event.target;
       if (target.nodeName !== 'BUTTON') return;
 
