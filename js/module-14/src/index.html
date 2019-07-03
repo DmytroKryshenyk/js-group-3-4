@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zxx">
+  <head>
+    <title>module-14</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="author" content="Dmytro Kryshenyk" />
+    <meta name="description" content="FA-JS-Advanced homework module-14" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300"
+      type="text/css"
+    />
+  </head>
+  <body>
+    <article class="bookmark">
+      <form action="#" method="POST" class="bookmark_form bookmark_form-js">
+        <label class="bookmark_label" for="bookmark_input">
+          Add your new bookmark link
+        </label>
+        <input
+          type="text"
+          class="bookmark_input bookmark_input-js"
+          id="bookmark_input"
+          name="bookmark-link-input"
+          placeholder="Add new link here"
+        />
+        <button type="submit" class="bookmark_submit bookmark_submit-js">
+          Add
+        </button>
+      </form>
+      <ul class="bookmark_list bookmark_list-js"></ul>
+    </article>
+
+    <template class="bookmark_item-template">
+      {{#each this}}
+      <li class="bookmark_item">
+          {{#if title}}
+          <a class="bookmark_link bookmark_link-js" href="{{url}}" title="link to {{title}}" target=”_blank”>{{ title }}</a>
+          {{else}}
+          <a class="bookmark_link bookmark_link-js" href="{{url}}" title="link to {{title}}" target=”_blank”>{{ url }}</a>
+          {{/if}}
+        
+          <button type="button" class="bookmark_remove bookmark_remove-js">Remove</button>
+      </li>
+      {{/each}}
+    </template>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+  
+  </body>
+</html>
