@@ -27,6 +27,8 @@ export default class Controller {
       }
 
       this.model.fetchUrlInfo(Itemvalue).then(newDataItem => {
+
+
         if (this.isHaveItem(newDataItem)) {
           this.view.showExistMessage();
           return;

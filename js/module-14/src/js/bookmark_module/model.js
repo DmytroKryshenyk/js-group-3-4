@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export default class Model {
   constructor(storageKey, data, API) {
     this.storageKey = storageKey;
@@ -28,7 +30,7 @@ export default class Model {
       this.data = this.data.filter(element => element.title !== ItemValue);
     };
 
-    // Fetching url info and return object with this info
+    //Fetching url info and return object with this info
     this.fetchUrlInfo = function(inputValue) {
       return fetch(`${this.API}${inputValue}`)
         .then(response => {

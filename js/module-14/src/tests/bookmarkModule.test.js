@@ -52,13 +52,13 @@ describe('Testing removeItemFromData function', () => {
       { title: 'BlaBla2', description: '', image: '' },
     ];
     const result = [{ title: 'BlaBla2', description: '', image: '' }];
-    
+
     const model = new Model();
     model.data = testData;
 
     model.removeItemFromData('BlaBla');
 
-    expect(model.data).toEqual(result); 
+    expect(model.data).toEqual(result);
   });
 
   test("Don't remove if function received an array", () => {
@@ -78,9 +78,35 @@ describe('Testing removeItemFromData function', () => {
     const model = new Model();
     expect(model.removeItemFromData(removeItem)).toBe(null);
   });
-
 });
 
-// describe('Testing creatingDataItem function', () => {
-//     it('')
-// })
+describe('Testing creatingDataItem function', () => {
+  it('If fetch working correctly, has the fn returned the correct object of item?', () => {
+    const model = new Model();
+
+    const typingVal = 'youtube.com';
+
+    const receivedData = {
+      title: 'YouTube',
+      description: 'Enjoy the videos and music you love.',
+      image: '',
+      url: 'https://www.youtube.com/',
+    };
+
+    const result = { ...receivedData, typingValue: typingVal };
+
+    expect(model.creatingDataItem(receivedData, typingVal)).toEqual(result);
+  });
+
+  it('If fetch return error, has the fn returned the correct object of item?', () => {
+    const model = new Model();
+
+    const typingVal = 'facebook.com';
+
+    const receivedData = 200;
+
+    const result = { url: typingVal, title: typingVal, typingValue: typingVal };
+
+    expect(model.creatingDataItem(receivedData, typingVal)).toEqual(result);
+  });
+});
